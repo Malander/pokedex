@@ -1,0 +1,56 @@
+@use '../variables';
+
+.poke-header {
+  background-color: var(--main-bg-color);
+  height: var(--layout-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+
+  img {
+    max-width: 100px;
+    margin-top: var(--decoration-height);
+  }
+
+  .poke-decoration {
+    position: absolute;
+    top: calc(100% - 1px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    max-width: 120rem;
+    background-color: var(--main-bg-color);
+    height: var(--decoration-height);
+
+    &:before {
+      position: absolute;
+      content: '';
+      left: calc(calc(var(--decoration-height) * -1) + 1px);
+      top: 0;
+      width: 0px;
+      height: 0px;
+      border-style: solid;
+      border-width: 0 var(--decoration-height) var(--decoration-height) 0;
+      border-color: transparent var(--main-bg-color) transparent transparent;
+      transform: rotate(0deg);
+    }
+
+    &:after {
+      position: absolute;
+      content: '';
+      right: calc(calc(var(--decoration-height) * -1) + 1px);
+      top: 0;
+      width: 0px;
+      height: 0px;
+      border-style: solid;
+      border-width: var(--decoration-height) var(--decoration-height) 0 0;
+      border-color: var(--main-bg-color) transparent transparent transparent;
+      transform: rotate(0deg);
+    }
+  }
+}

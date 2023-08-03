@@ -1,0 +1,35 @@
+@use '../variables';
+
+.poke-card {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: var(--space-md);
+  background-color: #e9e9e9;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+
+  &__image {
+    margin-bottom: var(--space-sm);
+  }
+
+  &__name {
+    font-weight: 600;
+    letter-spacing: 0.06rem;
+    font-size: 1.8rem;
+
+    span {
+      font-weight: 600;
+      color: rgba(#000, 0.4);
+      font-size: 1.4rem;
+    }
+  }
+
+  &__types {
+    display: flex;
+    margin-top: var(--space-sm);
+  }
+}
+
+
