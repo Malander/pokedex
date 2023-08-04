@@ -4,6 +4,15 @@ import { ucFirst } from "../utils/utils";
 // TODO: badge as component and remove css of poke-modal-types
 
 export const modal = {
+  /**
+   * Method to calculate the .
+   * @param score The actual score of the pokemon stat.
+   * @return string
+  */
+  calculateBarWidth(score: number) {
+    const maxValue = 150;
+    return (score / maxValue) * 100;
+  },
   template(pokemon: PokemonData) {
     const modalElement = document.createElement('div');
     modalElement.classList.add('poke-modal');
@@ -40,7 +49,7 @@ export const modal = {
                         ${stat.stat.name}
                       </div>
                       <div class="poke-stat__bar">
-                        <span>${stat.base_stat}</span>
+                        <span style="width: ${this.calculateBarWidth(stat.base_stat)}%">${stat.base_stat}</span>
                       </div>
                     </div>
                   `
@@ -54,12 +63,30 @@ export const modal = {
     `
     return modalElement
   },
-  closeModal(event: Event) {
-    const modalContent = event.target.closest('.poke-modal__content');
-    if (!modalContent) {
-      document.getElementById('app')!.removeChild(document.querySelector('.poke-modal')!);
+  /**
+    * Closes the modal element if conditions are met.
+    * @param Event event - The click event that triggered the modal closing.
+    * @returns void
+    * @description This method is used to close a modal element based on specific conditions.
+  */
+  closeModal(event: Event): void {
+    // Cast event.target to HTMLElement
+    const targetElement = event.target as HTMLElement;
+    const modalContent = targetElement.closest('.poke-modal__frame');
+    const closeModalButton = targetElement.closest('.poke-modal__close');
+
+    // If click event is NOT on modalContent (which means is on modal backdrop) 
+    // or click is on close button, then close modal.
+    if (!modalContent || closeModalButton) {
+      document.getElementById('app')!.removeChild(document.querySelector('.poke-modal'));
     }
   },
+  /**
+   * Render method of the modal, when called it appends a modal to the #app node
+   * and attach an event listener to it
+   * @param pokemon 
+   * @return void
+  */
   render(pokemon: PokemonData) {
     document.getElementById('app')!.appendChild(this.template(pokemon));
     document.querySelector('.poke-modal')?.addEventListener('click', (event: Event) => this.closeModal(event))

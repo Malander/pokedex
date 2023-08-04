@@ -1,49 +1,81 @@
 import { card } from './components/card.ts';
 import { modal } from './components/modal.ts';
 import { fetchPokemonData } from './fetchPokemonData.ts'
-import { PokemonData } from './types.ts';
+import { PokemonBase, PokemonData } from './types.ts';
 import { formatNumberToHash, ucFirst } from './utils/utils.ts';
 
 export const App = () => {
-  let pokemons: PokemonData[] = [];
+  let pokemons: PokemonData[] | PokemonBase[] = [];
   let isLoading = true;
+
+  function initObserver() {
+    const pokeCards = document.getElementsByClassName("poke-card");
+    const pokemonsFullData: PokemonData[] = []
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(async(entry) => {
+        const intersecting = entry.isIntersecting;
+        if (entry.intersectionRatio > 0) {
+          observer.unobserve(entry.target);
+        }
+        if (intersecting) {
+          const fetchUrl = entry.target.dataset.fetchUrl;
+          console.log(fetchUrl);
+          try {
+            const response = await fetch(fetchUrl);
+            if (response.ok) {
+              const singlePokemonData = await response.json();
+              const pokemonData: PokemonData = {
+                url: fetchUrl,
+                id: singlePokemonData.id,
+                idString: formatNumberToHash(singlePokemonData.id),
+                name: ucFirst(singlePokemonData.name),
+                image: singlePokemonData.sprites.other['official-artwork'].front_default,
+                stats: singlePokemonData.stats,
+                order: singlePokemonData.order,
+                types: singlePokemonData.types
+              }
+              pokemonsFullData.push(pokemonData)
+              pokemons = [...pokemonsFullData]
+              entry.target.outerHTML = card.render(pokemonData);
+              const orderedPokemons = pokemons.sort((a, b) => a.order - b.order)
+              orderedPokemons;
+            } else {
+              return Promise.reject(response)
+            }
+          } catch(error) {
+            console.error(error)
+          }
+      }
+    }
+    );
+    })
+
+    for (const card of pokeCards) {
+      // Apply the observe method to each card
+      observer.observe(card);
+    }
+
+    // pokemons = [...pokemonsFullData]
+    console.log(pokemons);
+  }
   
   async function init() {
     try {
       const data = await fetchPokemonData();
 
       if (data) {
-        const fetchSinglePokemons = data.map(async(pokemon) => {
-          const response = await fetch(pokemon.url, { cache: "force-cache" });
-          if (response.ok) {
-            const singlePokemonData = await response.json();
-            const pokemonData: PokemonData = {
-              id: singlePokemonData.id,
-              idString: formatNumberToHash(singlePokemonData.id),
-              name: ucFirst(singlePokemonData.name),
-              image: singlePokemonData.sprites.other['official-artwork'].front_default,
-              stats: singlePokemonData.stats,
-              order: singlePokemonData.order,
-              types: singlePokemonData.types
-            }
-            pokemons = [...pokemons, pokemonData]
-            const orderedPokemons = pokemons.sort((a, b) => a.order - b.order)
-            return orderedPokemons;
-          }
-          return Promise.reject(response);
-        })
-
-        return Promise.all(fetchSinglePokemons).then(() => 
-          render()
-        )
+        pokemons = data;
+      } else {
+        Promise.reject();
       }
 
-      Promise.reject();
 
     } catch(error) {
       console.error(error)
     } finally {
       isLoading = false
+      render();
+      initObserver();
     }
   }
 

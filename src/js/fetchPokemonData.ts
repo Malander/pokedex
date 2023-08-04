@@ -2,10 +2,10 @@ import { Alert } from './components/alert';
 import { PokemonListAPIResponse } from './types';
 
 export const fetchPokemonData = async() => {
-  const limit = 10;
+  const limit = 100;
 
   try {
-    const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}`, { cache: "force-cache" });
+    const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}`);
 
     if (response.ok) {
       const data = await response.json() as PokemonListAPIResponse;

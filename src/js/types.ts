@@ -16,6 +16,7 @@ export type AppState = {
 }
 
 export type PokemonData = {
+  url: string;
   id: number;
   idString: string;
   name: string;
