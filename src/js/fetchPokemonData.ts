@@ -1,7 +1,6 @@
-import { Alert } from './components/alert';
 import { PokemonListAPIResponse } from './types';
 
-export const fetchPokemonData = async() => {
+export const fetchPokemonData = async () => {
   const limit = 100;
 
   try {
@@ -12,10 +11,8 @@ export const fetchPokemonData = async() => {
       return data.results;
     }
 
-    throw new Error;
-
-  } catch(error) {
-    console.error(error)
-    // document.getElementById('alert-slot')!.innerHTML = Alert({text: 'Si è verificato un errore, si prega di riprovare.', style: 'negative'})
+    throw new Error();
+  } catch (error) {
+    console.error(error);
   }
-}
+};

@@ -1,18 +1,19 @@
-import { card } from './components/card.ts';
-import { modal } from './components/modal.ts';
-import { fetchPokemonData } from './fetchPokemonData.ts'
-import { PokemonBase, PokemonData } from './types.ts';
-import { formatNumberToHash, ucFirst } from './utils/utils.ts';
+import { card } from './components/card';
+import { errorMessage } from './components/error';
+import { modal } from './components/modal';
+import { fetchPokemonData } from './fetchPokemonData';
+import { PokemonBase, PokemonData } from './types';
+import { formatNumberToHash, ucFirst } from './utils/utils';
 
 export const App = () => {
   let pokemons: PokemonData[] | PokemonBase[] = [];
   let isLoading = true;
 
   function initObserver() {
-    const pokeCards = document.getElementsByClassName("poke-card");
-    const pokemonsFullData: PokemonData[] = []
+    const pokeCards = document.getElementsByClassName('poke-card');
+    const pokemonsFullData: PokemonData[] = [];
     const observer = new IntersectionObserver(entries => {
-      entries.forEach(async(entry) => {
+      entries.forEach(async (entry) => {
         const intersecting = entry.isIntersecting;
         if (entry.intersectionRatio > 0) {
           observer.unobserve(entry.target);
@@ -32,23 +33,23 @@ export const App = () => {
                 image: singlePokemonData.sprites.other['official-artwork'].front_default,
                 stats: singlePokemonData.stats,
                 order: singlePokemonData.order,
-                types: singlePokemonData.types
-              }
-              pokemonsFullData.push(pokemonData)
-              pokemons = [...pokemonsFullData]
+                types: singlePokemonData.types,
+              };
+              pokemonsFullData.push(pokemonData);
+              pokemons = [...pokemonsFullData];
               entry.target.outerHTML = card.render(pokemonData);
-              const orderedPokemons = pokemons.sort((a, b) => a.order - b.order)
+              const orderedPokemons = pokemons.sort((a, b) => a.order - b.order);
               orderedPokemons;
             } else {
-              return Promise.reject(response)
+              return await Promise.reject(response);
             }
-          } catch(error) {
-            console.error(error)
+          } catch (error) {
+            console.error(error);
           }
-      }
-    }
-    );
-    })
+        }
+      },
+      );
+    });
 
     for (const card of pokeCards) {
       // Apply the observe method to each card
@@ -62,18 +63,15 @@ export const App = () => {
   async function init() {
     try {
       const data = await fetchPokemonData();
-
       if (data) {
         pokemons = data;
       } else {
-        Promise.reject();
+        return await Promise.reject();
       }
-
-
-    } catch(error) {
-      console.error(error)
+    } catch (error) {
+      errorMessage.render();
     } finally {
-      isLoading = false
+      isLoading = false;
       render();
       initObserver();
     }
@@ -82,39 +80,39 @@ export const App = () => {
   function openPokemonModal(event: Event) {
     const card = event.target.closest('.poke-card');
     if (card) {
-      const currentPokemonData = pokemons.find((pokemon) => pokemon.id === +card.dataset.id)
+      const currentPokemonData = pokemons.find((pokemon) => pokemon.id === +card.dataset.id);
       if (currentPokemonData) {
-        modal.render(currentPokemonData)
+        modal.render(currentPokemonData);
       }
     }
-  }
-
-  function render() {
-    document.getElementById('app')!.innerHTML = template()
-    document.getElementById('content-slot')?.addEventListener('click', (event: Event) => openPokemonModal(event))
   }
 
   function template() {
     return `
       ${isLoading ?
-        '<div>Loading...</div>' 
-      : 
-        `<div class="poke-grid">
+    '<div>Loading...</div>' 
+    : 
+    `<div class="poke-grid">
           <div class="poke-grid__caption">
             <h1>Explore a comprehensive list of Pokémon and their stats</h1>
             <h2>Discover essential information, such as base stats and types</h2>
           </div>
           <div class="poke-grid__content" id="content-slot">
             ${pokemons.map((pokemon) => {
-              return `${card.render(pokemon)}`
-            }).join('')}
+    return `${card.render(pokemon)}`;
+  }).join('')}
           </div>
         </div>`
-      }
-      `
+}
+      `;
+  }
+
+  function render() {
+    document.getElementById('app')!.innerHTML = template();
+    document.getElementById('content-slot')?.addEventListener('click', (event: Event) => openPokemonModal(event));
   }
 
   return {
-    init
-  }
-}
+    init,
+  };
+};

@@ -1,27 +1,27 @@
-export type PokemonBase = {
-  name: string;
-  url: string;
+export interface PokemonBase {
+  name: string
+  url: string
 }
 
-export type PokemonListAPIResponse = {
-  count: number;
-  next: string;
-  previous: string;
+export interface PokemonListAPIResponse {
+  count: number
+  next: string
+  previous: string
   results: PokemonBase[]
 }
 
-export type AppState = {
-  pokemons: PokemonBase[];
-  isLoading: boolean;
+export interface AppState {
+  pokemons: PokemonBase[]
+  isLoading: boolean
 }
 
-export type PokemonData = {
-  url: string;
-  id: number;
-  idString: string;
-  name: string;
-  image: string;
-  stats: [];
-  order: number;
-  types: [];
+export interface PokemonData {
+  url: string
+  id: number
+  idString: string
+  name: string
+  image: string
+  stats: []
+  order: number
+  types: []
 }

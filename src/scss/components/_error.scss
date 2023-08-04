@@ -1,0 +1,25 @@
+@use '../variables';
+
+.poke-error {
+  padding: 0 var(--space-md);
+  margin-top: calc(var(--space-md) * -1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex-direction: column;
+  height: calc(100vh - (var(--layout-height) * 2));
+
+  img {
+    margin-bottom: var(--space-md);
+  }
+
+  h2 {
+    font-size: 2.6rem;
+    font-weight: 600;
+    margin-bottom: var(--space-xs);
+  }
+  p {
+    font-size: 1.8rem;
+  }
+}
