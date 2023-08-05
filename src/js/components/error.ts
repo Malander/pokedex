@@ -9,7 +9,9 @@ export const errorMessage =  {
     `;
   },
   render: (): void => {
-    debugger;
-    document.getElementById('app')!.innerHTML = errorMessage.template();
+    const app = document.getElementById('app');
+    if (app) {
+      app.innerHTML = errorMessage.template();
+    }
   },
 };

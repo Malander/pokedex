@@ -1,16 +1,18 @@
-import { PokemonData } from "../types"
-import { ucFirst } from "../utils/utils";
+import { PokemonData } from '../types/types';
+import { ucFirst } from '../utils/utils';
 
 // TODO: badge as component and remove css of poke-modal-types
 
 export const modal = {
   /**
-   * Method to calculate the .
+   * Method to calculate the width of the stat bar.
    * @param score The actual score of the pokemon stat.
-   * @return string
+   * @returns string
   */
   calculateBarWidth(score: number) {
+    // Max stat value
     const maxValue = 150;
+    // Return percentage diff from score and maxValue
     return (score / maxValue) * 100;
   },
   template(pokemon: PokemonData) {
@@ -35,15 +37,15 @@ export const modal = {
               <h3>Types</h3>
               <div class="poke-modal__types">
                 ${pokemon.types.map((pokemonType) => {
-                  return `<div class="poke-badge poke-badge--${pokemonType.type.name}">${ucFirst(pokemonType.type.name)}</div>`
-                }).join('')}
+    return `<div class="poke-badge poke-badge--${pokemonType.type.name}">${ucFirst(pokemonType.type.name)}</div>`;
+  }).join('')}
               </div>
             </div>
             <div>
               <h3>Stats</h3>
               <div class="poke-modal__stats">
                 ${pokemon.stats.map((stat) => {
-                  return `
+    return `
                     <div class="poke-stat">
                       <div class="poke-stat__name">
                         ${stat.stat.name}
@@ -52,16 +54,16 @@ export const modal = {
                         <span style="width: ${this.calculateBarWidth(stat.base_stat)}%">${stat.base_stat}</span>
                       </div>
                     </div>
-                  `
-                }).join('')}
+                  `;
+  }).join('')}
               </div>
             </div>
             
           </div>
         </div>
       </div>
-    `
-    return modalElement
+    `;
+    return modalElement;
   },
   /**
     * Closes the modal element if conditions are met.
@@ -89,6 +91,6 @@ export const modal = {
   */
   render(pokemon: PokemonData) {
     document.getElementById('app')!.appendChild(this.template(pokemon));
-    document.querySelector('.poke-modal')?.addEventListener('click', (event: Event) => this.closeModal(event))
-  }
-}
+    document.querySelector('.poke-modal')?.addEventListener('click', (event: Event) => this.closeModal(event));
+  },
+};

@@ -1,4 +1,4 @@
-import { PokemonListAPIResponse } from './types';
+import { PokemonListAPIResponse } from '../types/types';
 
 export const fetchPokemonData = async () => {
   const limit = 100;
