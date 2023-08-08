@@ -80,7 +80,7 @@ export const modal = {
     // If click event is NOT on modalContent (which means is on modal backdrop) 
     // or click is on close button, then close modal.
     if (!modalContent || closeModalButton) {
-      document.getElementById('app')!.removeChild(document.querySelector('.poke-modal'));
+      document.getElementById('app')!.removeChild(document.querySelector('.poke-modal') as Node);
     }
   },
   /**

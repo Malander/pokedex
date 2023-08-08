@@ -11,8 +11,8 @@
   top: 0;
   cursor: pointer;
   box-sizing: content-box;
-  border: 1px solid transparent;
   transition: 0.12s ease-in;
+  border: 1px solid #ccc;
   
   &:hover {
     transition: 0.12s ease-out;

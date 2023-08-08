@@ -11,17 +11,20 @@ export interface PokemonListAPIResponse {
 }
 
 export interface AppState {
-  pokemons: PokemonBase[]
+  pokemons: PokemonData[]
   isLoading: boolean
 }
 
 export interface PokemonData extends PokemonBase {
-  id: number
-  idString: string
-  image: string
-  stats: SinglePokemonAPIResponse['stats']
-  order: number
-  types: SinglePokemonAPIResponse['types']
+  name: string
+  url: string
+  id: number | null
+  idString: string | null
+  image: string | null
+  stats: SinglePokemonAPIResponse['stats'] | null
+  order: number | null
+  types: SinglePokemonAPIResponse['types'] | null
+  loaded: boolean
 }
 
 export interface SinglePokemonAPIResponse {
