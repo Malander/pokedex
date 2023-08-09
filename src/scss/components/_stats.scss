@@ -15,9 +15,9 @@
   &__bar {
     flex-grow: 2;
     height: 2.5rem;
-    padding: 4px;
+    padding: var(--space-xxs);
     flex-basis: 0;
-    background-color: #ebebeb;
+    background-color: var(--interactive-bg-color);
     display: flex;
     align-items: center;
     font-size: 1.6rem;

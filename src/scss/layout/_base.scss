@@ -4,11 +4,11 @@ html {
 
 body {
   font-size: 1.6rem;
+  height: 100%;
   font-family: 'Exo', sans-serif;
 }
 
 main {
   padding: var(--layout-height) 0;
-  min-height: 100vh;
   background: url('/images/bg-white-pattern.png');
 }

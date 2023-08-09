@@ -1,53 +1,72 @@
+import { getPokemonData } from '../api/api';
 import { store } from '../store';
-import { PokemonBase, PokemonData, SinglePokemonAPIResponse } from '../types/types';
+import { PokemonData } from '../types/types';
 import { formatNumberToHash, ucFirst } from '../utils/utils';
+import { badge } from './badge';
+import { errorMessage } from './error';
 
 export const card = {
+  /**
+   * Loads Pokemon card data for an intersecting element and updates the store.
+   *
+   * @param {IntersectionObserverEntry} entry - The intersection observer entry for the target element.
+  */
   loadPokemonCard(entry: IntersectionObserverEntry) {
-    const elementTarget = entry.target as HTMLElement;
-    const fetchUrl = elementTarget.dataset.fetchUrl!;
-    fetch(fetchUrl).then(async (response) => {
-      if (response.ok) {
-        const singlePokemonData = await response.json() as SinglePokemonAPIResponse;
+    const targetElement = entry.target as HTMLElement;
+    const pokemonUrl = targetElement.dataset.fetchUrl!;
+    getPokemonData(pokemonUrl).then((response) => {
+      if (response) {
         const pokemonData: PokemonData = {
-          name: ucFirst(singlePokemonData.name),
-          url: fetchUrl,
-          id: singlePokemonData.id,
-          idString: formatNumberToHash(singlePokemonData.id),
-          image: singlePokemonData.sprites.other['official-artwork'].front_default,
-          stats: singlePokemonData.stats,
-          order: singlePokemonData.order,
-          types: singlePokemonData.types,
-          loaded: true,
+          name: ucFirst(response.name),
+          url: pokemonUrl,
+          id: response.id,
+          idString: formatNumberToHash(response.id),
+          image: response.sprites.other['official-artwork'].front_default,
+          stats: response.stats,
+          order: response.order,
+          types: response.types,
         };
         
-        const updatedPokemons = store.state.pokemons.map((pokemon: PokemonBase) => {
-          if (pokemon.url === fetchUrl) {
+        const updatedPokemons = store.state.pokemons.map((pokemon: PokemonData) => {
+          if (pokemon.url === pokemonUrl) {
             return { ...pokemon, ...pokemonData };
           }
           return pokemon;
         });
-        console.log('UPDATED CARD');
-        store.update({ pokemons: updatedPokemons }, () => this.update(elementTarget, pokemonData) );
-      } else {
-        return Promise.reject(response);
+        
+        return store.update({ pokemons: updatedPokemons }, () => this.update(targetElement, pokemonData) );
       }
-    }).catch((error) => {
-      console.log(error);
+    }).catch(() => {
+      errorMessage.render();
     });
   },
-  update(target, pokemon: PokemonData) {
+  /**
+   * Updates the content of a card component with the provided Pokemon data.
+   *
+   * @param {Element} target - The card element to update.
+   * @param {PokemonData} pokemon - The Pokemon data used for rendering.
+  */
+  update(target: Element, pokemon: PokemonData) {
     target.outerHTML = this.render(pokemon);
   },
+  /**
+    * Renders the HTML markup for a Pokemon card.
+    * @param {PokemonData} pokemon - The Pokemon data used for rendering.
+  */
   render(pokemon: PokemonData) {
+    const imageSrc = pokemon.image ? pokemon.image : '/images/pikachu.png';
     return `
-      <div data-fetch-url="${pokemon.url}" data-loaded="${pokemon.loaded ? pokemon.loaded : false}" data-id="${pokemon.id ? pokemon.id : ''}" class="poke-card">
-        <img alt="${pokemon.name} Artwork" width="150" height="150" class="poke-card__image" src="${pokemon.image ? pokemon.image : '/images/pikachu.png'}" />
-        <h3 class="poke-card__name">${pokemon.name} <span>${pokemon.idString ? pokemon.idString : ''}</span></h3>
+      <div data-fetch-url="${pokemon.url}" data-id="${pokemon.id ? pokemon.id : ''}" class="poke-card">
+        <img alt="${pokemon.name} Artwork" width="150" height="150" class="poke-card__image" src="${imageSrc}" />
+        <h3 class="poke-card__name">
+          ${pokemon.name}
+          ${pokemon.idString ? 
+    `<span class="poke-card__id">${pokemon.idString}</span>`
+    : 
+    '<span class="poke-card__id poke-card__id--empty"></span>'}</span>
+            </h3>
         <div class="poke-card__types">
-          ${pokemon.types ? pokemon.types?.map((pokemonType: { type: { name: string; }; }) => {
-    return `<div class="poke-badge poke-badge--${pokemonType.type.name}">${ucFirst(pokemonType.type.name)}</div>`;
-  }).join('') : '<div class="poke-badge"></div><div class="poke-badge"></div>'}
+          ${badge.render(pokemon)}
         </div>
       </div>
     `;

@@ -1,13 +1,11 @@
+import { store } from '../store';
 import { PokemonData } from '../types/types';
-import { ucFirst } from '../utils/utils';
-
-// TODO: badge as component and remove css of poke-modal-types
+import { badge } from './badge';
 
 export const modal = {
   /**
-   * Method to calculate the width of the stat bar.
-   * @param score The actual score of the pokemon stat.
-   * @returns string
+   * Calculate the width of the stat bar in proportion of the max value.
+   * @param {number} score The actual score of the pokemon stat.
   */
   calculateBarWidth(score: number) {
     // Max stat value
@@ -15,6 +13,11 @@ export const modal = {
     // Return percentage diff from score and maxValue
     return (score / maxValue) * 100;
   },
+  /**
+   * Generates the HTML markup for a modal displaying detailed information about a Pokemon.
+   *
+   * @param {PokemonData} pokemon - The Pokemon data to display in the modal.
+  */
   template(pokemon: PokemonData) {
     const modalElement = document.createElement('div');
     modalElement.classList.add('poke-modal');
@@ -36,15 +39,13 @@ export const modal = {
             <div>
               <h3>Types</h3>
               <div class="poke-modal__types">
-                ${pokemon.types.map((pokemonType) => {
-    return `<div class="poke-badge poke-badge--${pokemonType.type.name}">${ucFirst(pokemonType.type.name)}</div>`;
-  }).join('')}
+                ${badge.render(pokemon)}
               </div>
             </div>
             <div>
               <h3>Stats</h3>
               <div class="poke-modal__stats">
-                ${pokemon.stats.map((stat) => {
+                ${pokemon.stats ? pokemon.stats.map((stat) => {
     return `
                     <div class="poke-stat">
                       <div class="poke-stat__name">
@@ -55,7 +56,7 @@ export const modal = {
                       </div>
                     </div>
                   `;
-  }).join('')}
+  }).join('') : ''}
               </div>
             </div>
             
@@ -66,12 +67,29 @@ export const modal = {
     return modalElement;
   },
   /**
-    * Closes the modal element if conditions are met.
-    * @param Event event - The click event that triggered the modal closing.
-    * @returns void
-    * @description This method is used to close a modal element based on specific conditions.
+   * Opens a modal displaying detailed information about a Pokemon.
+   *
+   * @param {Event} event - The event object triggered when the modal is opened.
   */
-  closeModal(event: Event): void {
+  open(event: Event) {
+    const targetElement = event.target as HTMLElement;
+    const pokeCard: HTMLElement | null = targetElement.closest('.poke-card');
+    if (pokeCard) {
+      const pokeId = pokeCard.dataset.id!;
+      const currentPokemonData = store.state.pokemons.find((pokemon: PokemonData) => {
+        debugger;
+        return pokemon.id === +pokeId;
+      });
+      if (currentPokemonData) {
+        modal.render(currentPokemonData);
+      }
+    }
+  },
+  /**
+    * Closes the modal element if conditions are met.
+    * @param {Event} event - The click event that triggered the modal closing.
+  */
+  close(event: Event) {
     // Cast event.target to HTMLElement
     const targetElement = event.target as HTMLElement;
     const modalContent = targetElement.closest('.poke-modal__frame');
@@ -86,11 +104,10 @@ export const modal = {
   /**
    * Render method of the modal, when called it appends a modal to the #app node
    * and attach an event listener to it
-   * @param pokemon 
-   * @return void
+   * @param {PokemonData} pokemon 
   */
   render(pokemon: PokemonData) {
     document.getElementById('app')!.appendChild(this.template(pokemon));
-    document.querySelector('.poke-modal')?.addEventListener('click', (event: Event) => this.closeModal(event));
+    document.querySelector('.poke-modal')!.addEventListener('click', (event: Event) => this.close(event));
   },
 };

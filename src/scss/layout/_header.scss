@@ -13,13 +13,13 @@
   z-index: 10;
 
   img {
-    max-width: 100px;
+    max-width: 10rem;
     margin-top: var(--decoration-height);
   }
 
   .poke-decoration {
     position: absolute;
-    top: calc(100% - 1px);
+    top: calc(100% - 0.1rem);
     left: 50%;
     transform: translateX(-50%);
     width: 80%;
@@ -30,10 +30,10 @@
     &:before {
       position: absolute;
       content: '';
-      left: calc(calc(var(--decoration-height) * -1) + 1px);
+      left: calc(calc(var(--decoration-height) * -1) + 0.1rem);
       top: 0;
-      width: 0px;
-      height: 0px;
+      width: 0;
+      height: 0;
       border-style: solid;
       border-width: 0 var(--decoration-height) var(--decoration-height) 0;
       border-color: transparent var(--main-bg-color) transparent transparent;
@@ -43,10 +43,10 @@
     &:after {
       position: absolute;
       content: '';
-      right: calc(calc(var(--decoration-height) * -1) + 1px);
+      right: calc(calc(var(--decoration-height) * -1) + 0.1rem);
       top: 0;
-      width: 0px;
-      height: 0px;
+      width: 0;
+      height: 0;
       border-style: solid;
       border-width: var(--decoration-height) var(--decoration-height) 0 0;
       border-color: var(--main-bg-color) transparent transparent transparent;

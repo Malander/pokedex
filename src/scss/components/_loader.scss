@@ -1,0 +1,32 @@
+.poke-loader {
+  width: 100%;
+  height: calc(100vh - (var(--layout-height) * 2));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  &__icon {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    background-color: transparent;
+    border: 0.4rem solid rgba(black, 0.35);
+    border-top-color: var(--main-bg-color);
+    -webkit-animation: 1s spin linear infinite;
+    animation: 1s spin linear infinite;
+  }
+
+  &__text {
+    margin-top: var(--space-md);
+  }
+}
+
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}

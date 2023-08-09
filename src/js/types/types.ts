@@ -16,15 +16,12 @@ export interface AppState {
 }
 
 export interface PokemonData extends PokemonBase {
-  name: string
-  url: string
   id: number | null
   idString: string | null
   image: string | null
   stats: SinglePokemonAPIResponse['stats'] | null
   order: number | null
   types: SinglePokemonAPIResponse['types'] | null
-  loaded: boolean
 }
 
 export interface SinglePokemonAPIResponse {

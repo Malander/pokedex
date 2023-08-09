@@ -2,12 +2,16 @@
 
 :root {
   --main-bg-color: #263238;
-  --space-xxs:  4px;
-  --space-xs:   8px;
-  --space-sm:   16px;
-  --space-md:   24px;
-  --space-lg:   32px;
-  --space-xl:   64px;
+  --interactive-bg-color: #e9e9e9;
+  --skeleton-color: #bebebe;
+  --hover-color: #f2f2f2;
+  --border-color: #cccccc;
+  --space-xxs:  0.4rem;
+  --space-xs:   0.8rem;
+  --space-sm:   1.6rem;
+  --space-md:   2.4rem;
+  --space-lg:   3.2rem;
+  --space-xl:   6.4rem;
   --layout-height: 5.6rem;
   --decoration-height: 1.6rem;
 }

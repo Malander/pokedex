@@ -22,12 +22,17 @@ $badge-colors: (
 .poke-badge {
   padding: var(--space-xxs) var(--space-xs);
   font-size: 1.2rem;
-  background-color: #bebebe;
+  background-color: var(--skeleton-color);
   border-radius: 3px;
   color: white;
 
 	& + & {
 		margin-left: var(--space-xs);
+	}
+
+	&--empty {
+		height: 2rem;
+		width: 5rem;
 	}
 
   @each $badge-type, $color in $badge-colors {

@@ -1,4 +1,4 @@
 import '../scss/main.scss';
-import { App } from './app';
+import { app } from './app';
 
-App.init();
+app.init();
