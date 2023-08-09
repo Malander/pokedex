@@ -1,13 +1,11 @@
-import { App } from './app';
-import { initObserver } from './utils/observer';
+import { AppState } from "./types/types";
 
-export const Store = {
+export const store = {
   state: {
     pokemons: [],
     isLoading: true,
   },
-  update(newState, callback: () => void) {
-    console.log('UPODATING STATE', newState);
+  update(newState: AppState, callback: () => void) {
     this.state = { ...this.state, ...newState };   
     callback(); 
   },

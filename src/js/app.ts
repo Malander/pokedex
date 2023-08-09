@@ -2,9 +2,9 @@ import { card } from './components/card';
 import { errorMessage } from './components/error';
 import { modal } from './components/modal';
 import { fetchPokemonData } from './api/fetchPokemonData';
-import { AppState, PokemonData } from './types/types';
+import { PokemonData } from './types/types';
 import { initObserver } from './utils/observer';
-import { Store } from './store';
+import { store } from './store';
 
 export const App = {  
   init() {
@@ -24,13 +24,13 @@ export const App = {
               loaded: false,
             };
           });
-          Store.update({ isLoading: false, pokemons: pokemonsData }, () => this.render());
+          store.update({ isLoading: false, pokemons: pokemonsData }, () => this.render());
           initObserver(document.querySelectorAll('.poke-card'));
         } else {
           return Promise.reject();
         }
       }).catch(() => {
-        Store.update({ isLoading: false }, () => this.render());
+        store.update({ isLoading: false }, () => this.render());
         errorMessage.render();
       });
   },
@@ -40,7 +40,7 @@ export const App = {
     const pokeCard: HTMLElement | null = targetElement.closest('.poke-card');
     if (pokeCard) {
       const pokeId = pokeCard.dataset.id!;
-      const currentPokemonData = Store.state.pokemons.find((pokemon: PokemonData) => {
+      const currentPokemonData = store.state.pokemons.find((pokemon: PokemonData) => {
         debugger;
         return pokemon.id === +pokeId;
       });
@@ -52,20 +52,20 @@ export const App = {
 
   template() {
     return `
-      ${Store.state.isLoading ?
+      ${store.state.isLoading ?
     '<div>Loading...</div>' 
     : 
     `<div class="poke-grid">
-          <div class="poke-grid__caption">
-            <h1>Explore a comprehensive list of Pokémon and their stats</h1>
-            <h2>Discover essential information, such as base stats and types</h2>
-          </div>
-          <div class="poke-grid__content" id="content-slot">
-            ${Store.state.pokemons.map((pokemon) => {
-    return `${card.render(pokemon)}`;
-  }).join('')}
-          </div>
-        </div>`
+      <div class="poke-grid__caption">
+        <h1>Explore a comprehensive list of Pokémon and their stats</h1>
+        <h2>Discover essential information, such as base stats and types</h2>
+      </div>
+      <div class="poke-grid__content" id="content-slot">
+        ${store.state.pokemons.map((pokemon) => {
+          return `${card.render(pokemon)}`;
+        }).join('')}
+      </div>
+    </div>`
 }
     `;
   },

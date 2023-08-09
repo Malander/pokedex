@@ -1,4 +1,4 @@
-import { Store } from '../store';
+import { store } from '../store';
 import { PokemonBase, PokemonData, SinglePokemonAPIResponse } from '../types/types';
 import { formatNumberToHash, ucFirst } from '../utils/utils';
 
@@ -21,14 +21,14 @@ export const card = {
           loaded: true,
         };
         
-        const updatedPokemons = Store.state.pokemons.map((pokemon: PokemonBase) => {
+        const updatedPokemons = store.state.pokemons.map((pokemon: PokemonBase) => {
           if (pokemon.url === fetchUrl) {
             return { ...pokemon, ...pokemonData };
           }
           return pokemon;
         });
         console.log('UPDATED CARD');
-        Store.update({ pokemons: updatedPokemons }, () => this.update(elementTarget, pokemonData) );
+        store.update({ pokemons: updatedPokemons }, () => this.update(elementTarget, pokemonData) );
       } else {
         return Promise.reject(response);
       }
