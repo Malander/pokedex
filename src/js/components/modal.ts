@@ -77,7 +77,6 @@ export const modal = {
     if (pokeCard) {
       const pokeId = pokeCard.dataset.id!;
       const currentPokemonData = store.state.pokemons.find((pokemon: PokemonData) => {
-        debugger;
         return pokemon.id === +pokeId;
       });
       if (currentPokemonData) {
