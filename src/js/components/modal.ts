@@ -73,15 +73,13 @@ export const modal = {
   */
   open(event: Event) {
     const targetElement = event.target as HTMLElement;
-    const pokeCard: HTMLElement | null = targetElement.closest('.poke-card');
-    if (pokeCard) {
-      const pokeId = pokeCard.dataset.id!;
-      const currentPokemonData = store.state.pokemons.find((pokemon: PokemonData) => {
-        return pokemon.id === +pokeId;
-      });
-      if (currentPokemonData) {
-        modal.render(currentPokemonData);
-      }
+    const pokeCard: HTMLElement = targetElement.closest('.poke-card')!;
+    const pokeId = pokeCard.dataset.id!;
+    const currentPokemonData = store.state.pokemons.find((pokemon: PokemonData) => {
+      return pokemon.id === +pokeId;
+    });
+    if (currentPokemonData) {
+      modal.render(currentPokemonData);
     }
   },
   /**
