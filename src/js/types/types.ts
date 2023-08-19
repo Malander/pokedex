@@ -2,19 +2,16 @@ export interface PokemonBase {
   name: string
   url: string
 }
-
 export interface PokemonListAPIResponse {
   count: number
   next: string
   previous: string
   results: PokemonBase[]
 }
-
 export interface AppState {
   pokemons: PokemonData[]
   isLoading: boolean
 }
-
 export interface PokemonData extends PokemonBase {
   id: number | null
   idString: string | null
@@ -23,7 +20,6 @@ export interface PokemonData extends PokemonBase {
   order: number | null
   types: SinglePokemonAPIResponse['types'] | null
 }
-
 export interface SinglePokemonAPIResponse {
   id: number;
   name: string;
@@ -43,7 +39,6 @@ export interface SinglePokemonAPIResponse {
   stats: IPokemonStat[];
   types: IPokemonType[];
 }
-
 export interface IPokemonSprites {
   back_default: string;
   back_female: string;
@@ -56,14 +51,12 @@ export interface IPokemonSprites {
   other: IPokemonSpriteOther;
   versions: unknown;
 }
-
 export interface IPokemonSpriteOther {
   dream_world: 'front_default' | 'front_female';
   'official-artwork': {
     front_default: string;
   };
 }
-
 export interface IPokemonStat {
   stat: {
     name: string;
@@ -72,7 +65,6 @@ export interface IPokemonStat {
   effort: number;
   base_stat: number;
 }
-
 export interface IPokemonType {
   slot: number;
   type: {

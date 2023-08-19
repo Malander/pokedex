@@ -3,8 +3,7 @@ import { errorMessage } from './components/error';
 import { modal } from './components/modal';
 import { getPokemonList } from './api/api';
 import { PokemonData } from './types/types';
-import { initObserver } from './utils/observer';
-import { store } from './store';
+import { store } from './store/store';
 import { loader } from './components/loader';
 import { ucFirst } from './utils/utils';
 
@@ -12,29 +11,55 @@ export const app = {
   /**
    * Initializes the application by fetching the list of Pokémon, updating the store's state, and rendering the content.
   */
-  init() {
-    getPokemonList()
-      .then((results) => {
-        if (results) {
-          const pokemonsData: PokemonData[] = results.map((pokemon) => {
-            return {
-              name: ucFirst(pokemon.name),
-              url: pokemon.url,
-              id: null,
-              idString: null,
-              image: null,
-              stats: null,
-              order: null,
-              types: null,
-            };
-          });
-          store.update({ isLoading: false, pokemons: pokemonsData }, () => this.render());
-          return initObserver(document.querySelectorAll('.poke-card'));
+  async init() {
+    try {
+      const results = await getPokemonList();
+
+      if (!results) {
+        throw new Error('Failed to fetch Pokemon data');
+      }
+
+      const pokemonsData: PokemonData[] = results.map(({ name, url }) => ({
+        name: ucFirst(name),
+        url: url,
+        id: null,
+        idString: null,
+        image: null,
+        stats: null,
+        order: null,
+        types: null,
+      }));
+
+      store.update({ isLoading: false, pokemons: pokemonsData }, () => this.render());
+      this.initObserver(document.querySelectorAll('.poke-card'));
+        
+    } catch (error) {
+      store.update({ isLoading: false }, () => errorMessage.render());
+    }
+  },
+  /**
+   * Initializes an IntersectionObserver to load Pokemon cards for intersecting elements.
+   * When an element comes into view (intersects), the `loadPokemonCard` function is triggered for that element.
+   * If an element's intersection ratio exceeds 0, it's unobserved to prevent further triggers.
+   *
+   * @param observableElements - The list of elements to observe for intersections.
+  */
+  initObserver(observableElements: NodeListOf<Element>) {
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        const intersecting = entry.isIntersecting;
+        if (entry.intersectionRatio > 0) {
+          observer.unobserve(entry.target);
         }
-        throw new Error('Failed to fetch Pokemon data 2');
-      }).catch(() => {
-        store.update({ isLoading: false }, () => errorMessage.render());
-      });
+        if (intersecting) {
+          void card.loadPokemonCard(entry);
+        }
+      }
+    });
+  
+    for (const element of observableElements) {
+      observer.observe(element);
+    }
   },
   /**
     * Generates the HTML markup for the application's content based on the store's state.

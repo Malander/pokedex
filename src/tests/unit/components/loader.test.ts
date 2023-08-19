@@ -1,4 +1,4 @@
-import { loader } from '../js/components/loader';
+import { loader } from '../../../js/components/loader';
 
 describe('loader', () => {
   describe('render', () => {

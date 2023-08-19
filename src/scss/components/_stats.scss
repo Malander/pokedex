@@ -1,3 +1,5 @@
+@use '../variables/variables' as *;
+
 .poke-stat {
   display: flex;
   align-items: center;
@@ -15,26 +17,32 @@
   &__bar {
     flex-grow: 2;
     height: 2.5rem;
-    padding: var(--space-xxs);
+    padding: var(--space-xs);
     flex-basis: 0;
     background-color: var(--interactive-bg-color);
     display: flex;
     align-items: center;
     font-size: 1.6rem;
     position: relative;
+  }
 
-    span {
-      height: 100%;
-      display: flex;
-      align-items: center;
-      padding-left: var(--space-xxs);
-      line-height: 2.5rem;
-      position: absolute;
-      color: white;
-      top: 0;
-      left: 0;
-      background-color: #1565C0;
-      font-size: 1.4rem;
+  &__bar-value {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding-left: var(--space-xxs);
+    line-height: 2.5rem;
+    position: absolute;
+    color: white;
+    top: 0;
+    left: 0;
+    background-color: #1565C0;
+    font-size: 1.4rem;
+
+    @each $badge-type, $color in $badge-colors {
+      &--#{$badge-type} {
+        background-color: $color;
+      }
     }
   }
 }

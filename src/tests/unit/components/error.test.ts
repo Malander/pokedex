@@ -1,5 +1,4 @@
-import { errorMessage } from '../js/components/error';
-
+import { errorMessage } from '../../../js/components/error';
 
 describe('errorMessage', () => {
   // Create a container before each test

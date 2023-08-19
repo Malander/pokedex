@@ -1,4 +1,4 @@
-import { store } from '../store';
+import { store } from '../store/store';
 import { PokemonData } from '../types/types';
 import { badge } from './badge';
 
@@ -16,11 +16,13 @@ export const modal = {
   /**
    * Generates the HTML markup for a modal displaying detailed information about a Pokemon.
    *
-   * @param {PokemonData} pokemon - The Pokemon data to display in the modal.
+   * @param pokemon - The Pokemon data to display in the modal.
   */
   template(pokemon: PokemonData) {
     const modalElement = document.createElement('div');
     modalElement.classList.add('poke-modal');
+    // TODO: check existance of pokemon type (it should be always present)
+    const statColor = pokemon.types![0].type.name;
     modalElement.innerHTML = `
       <div class="poke-modal__frame">
         <div class="poke-modal__header">
@@ -39,7 +41,7 @@ export const modal = {
             <div>
               <h3>Types</h3>
               <div class="poke-modal__types">
-                ${badge.render(pokemon)}
+                ${badge.render(pokemon.types)}
               </div>
             </div>
             <div>
@@ -52,7 +54,7 @@ export const modal = {
                         ${stat.stat.name}
                       </div>
                       <div class="poke-stat__bar">
-                        <span style="width: ${this.calculateBarWidth(stat.base_stat)}%">${stat.base_stat}</span>
+                        <span class="poke-stat__bar-value poke-stat__bar-value--${statColor}" style="width: ${this.calculateBarWidth(stat.base_stat)}%">${stat.base_stat}</span>
                       </div>
                     </div>
                   `;
@@ -69,7 +71,7 @@ export const modal = {
   /**
    * Opens a modal displaying detailed information about a Pokemon.
    *
-   * @param {Event} event - The event object triggered when the modal is opened.
+   * @param event - The event object triggered when the modal is opened.
   */
   open(event: Event) {
     const targetElement = event.target as HTMLElement;
@@ -84,7 +86,7 @@ export const modal = {
   },
   /**
     * Closes the modal element if conditions are met.
-    * @param {Event} event - The click event that triggered the modal closing.
+    * @param event - The click event that triggered the modal closing.
   */
   close(event: Event) {
     // Cast event.target to HTMLElement
@@ -99,9 +101,10 @@ export const modal = {
     }
   },
   /**
-   * Render method of the modal, when called it appends a modal to the #app node
-   * and attach an event listener to it
-   * @param {PokemonData} pokemon 
+   * Renders a modal with provided Pokemon data and appends it to the #app node.
+   * It also attaches an event listener to the modal for handling close operations.
+   *
+   * @param pokemon - The Pokemon data used for rendering the modal.
   */
   render(pokemon: PokemonData) {
     document.getElementById('app')!.appendChild(this.template(pokemon));
