@@ -1,6 +1,18 @@
-import { errorMessage } from '../components/error';
+import { ErrorBoundary } from '../components/Error';
 import { PokemonBase, PokemonListAPIResponse, SinglePokemonAPIResponse } from '../types/types';
 import { POKEMON_LIST_ENDPOINT } from './endpoints';
+
+async function fetchData<T>(url: string): Promise<T | undefined> {
+  try {
+    const response = await fetch(url);
+    if (response.ok) {
+      return await response.json() as T;
+    }
+    throw new Error('Failed to fetch data');
+  } catch (error) {
+    ErrorBoundary.handleError(error);
+  }
+}
 
 /**
  * Fetches a list of Pokemon from the API.
@@ -9,16 +21,8 @@ import { POKEMON_LIST_ENDPOINT } from './endpoints';
 */
 export const getPokemonList = async (): Promise<PokemonBase[] | undefined> => {
   const limit = 100;
-  try {
-    const response = await fetch(`${POKEMON_LIST_ENDPOINT}?limit=${limit}`);
-    if (response.ok) {
-      const data = await response.json() as PokemonListAPIResponse;
-      return data.results;
-    }
-    throw new Error('Failed to fetch Pokemon data');
-  } catch {
-    errorMessage.render();
-  }
+  return fetchData<PokemonListAPIResponse>(`${POKEMON_LIST_ENDPOINT}?limit=${limit}`)
+    .then(data => data?.results);
 };
 
 /**
@@ -28,14 +32,5 @@ export const getPokemonList = async (): Promise<PokemonBase[] | undefined> => {
  * @returns {Promise<SinglePokemonAPIResponse | undefined>} A promise that resolves to the detailed Pokemon data or undefined on error.
 */
 export const getPokemonData = async (pokemonUrl: string): Promise<SinglePokemonAPIResponse | undefined> => {
-  try {
-    const response = await fetch(pokemonUrl);
-    if (response.ok) {
-      const data = await response.json() as SinglePokemonAPIResponse;
-      return data;
-    }
-    throw new Error('Failed to fetch Pokemon data');
-  } catch {
-    errorMessage.render();
-  }
+  return fetchData<SinglePokemonAPIResponse>(pokemonUrl);
 };

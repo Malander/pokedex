@@ -1,4 +1,4 @@
-import { store } from '../../../js/store/store';
+import { store } from '../../../assets/js/store/store';
 import { mockSinglePokemonData } from '../../mockData';
 
 describe('store', () => {
@@ -11,7 +11,7 @@ describe('store', () => {
   });
 
   describe('update', () => {
-    it('should correctly update the state and invoke the callback', () => {
+    it('should correctly update the state and call the callback', () => {
       const callbackMock = jest.fn();
 
       const newState = {
@@ -25,7 +25,7 @@ describe('store', () => {
       expect(callbackMock).toHaveBeenCalled();
     });
 
-    it('should merge new state with old state', () => {
+    it('should merge new state with old state and call the callback', () => {
       const callbackMock = jest.fn();
 
       const partialNewState = {

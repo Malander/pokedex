@@ -34,12 +34,12 @@ export interface SinglePokemonAPIResponse {
   held_items: [];
   location_area_encounters: string;
   moves: [];
-  sprites: IPokemonSprites;
+  sprites: PokemonSprites;
   species: Record<string, string>;
-  stats: IPokemonStat[];
-  types: IPokemonType[];
+  stats: PokemonStat[];
+  types: PokemonType[];
 }
-export interface IPokemonSprites {
+export interface PokemonSprites {
   back_default: string;
   back_female: string;
   back_shiny: string;
@@ -48,16 +48,16 @@ export interface IPokemonSprites {
   front_female: string;
   front_shiny: string;
   front_shiny_female: string;
-  other: IPokemonSpriteOther;
+  other: PokemonSpriteOther;
   versions: unknown;
 }
-export interface IPokemonSpriteOther {
+export interface PokemonSpriteOther {
   dream_world: 'front_default' | 'front_female';
   'official-artwork': {
     front_default: string;
   };
 }
-export interface IPokemonStat {
+export interface PokemonStat {
   stat: {
     name: string;
     url: string;
@@ -65,7 +65,7 @@ export interface IPokemonStat {
   effort: number;
   base_stat: number;
 }
-export interface IPokemonType {
+export interface PokemonType {
   slot: number;
   type: {
     name: string;

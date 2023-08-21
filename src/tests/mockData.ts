@@ -1,4 +1,4 @@
-import { PokemonData } from '../js/types/types';
+import { PokemonData } from '../assets/js/types/types';
 
 export const mockOriginalSinglePokemonData: PokemonData = {
   name: 'Ivysaur',

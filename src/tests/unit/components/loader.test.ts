@@ -1,9 +1,9 @@
-import { loader } from '../../../js/components/loader';
+import { Loader } from '../../../assets/js/components/Loader';
 
 describe('loader', () => {
   describe('render', () => {
     it('should return the correct loader HTML template', () => {
-      const renderedTemplate = loader.render();
+      const renderedTemplate = Loader.render();
 
       expect(renderedTemplate).toContain('<div class="poke-loader">');
       expect(renderedTemplate).toContain('<div class="poke-loader__icon"></div>');

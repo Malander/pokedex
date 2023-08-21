@@ -2,29 +2,29 @@ import { getPokemonData } from '../api/api';
 import { store } from '../store/store';
 import { PokemonData, SinglePokemonAPIResponse } from '../types/types';
 import { formatNumberToHash, ucFirst } from '../utils/utils';
-import { badge } from './badge';
-import { errorMessage } from './error';
+import { Badge } from './Badge';
 
-export const card = {
+export const Card = {
   /**
    * Loads Pokemon card data for an intersecting element and updates the store.
    *
    * @param entry - The intersection observer entry for the target element.
   */
-  async loadPokemonCard(entry: IntersectionObserverEntry) {
-    const targetElement = entry.target as HTMLElement;
+  async loadPokemonCard(targetElement: HTMLElement) {
     const pokemonUrl = targetElement.dataset.fetchUrl!;
 
     try {
       const response = await getPokemonData(pokemonUrl);
-      if (!response) return;
+      if (!response) throw new Error();
 
       const pokemonData = this.transformResponseToPokemonData(response, pokemonUrl);
       const updatedPokemons = this.getUpdatedPokemons(pokemonUrl, pokemonData);
+
+      if (pokemonData.name === 'Ivysaur') throw new Error();
         
       store.update({ pokemons: updatedPokemons }, () => this.update(targetElement, pokemonData) );
     } catch {
-      errorMessage.render();
+      this.error(targetElement);
     }
   },
   /**
@@ -66,8 +66,21 @@ export const card = {
    * @param target - The card element to update.
    * @param pokemon - The Pokemon data used for rendering.
   */
-  update(target: Element, pokemon: PokemonData) {
+  update(target: HTMLElement, pokemon: PokemonData) {
     target.outerHTML = this.render(pokemon);
+  },
+  error(target: HTMLElement) {
+    target.outerHTML = this.errorTemplate();
+  },
+  errorTemplate() {
+    return `
+      <div class="poke-card poke-card--error">
+          <img alt="Sad Pikachu" width="150" height="150" class="poke-card__image" src="/images/pikachu.png" />
+          <h3 class="poke-card__name">
+            There was an error loading this Pokemon.
+          </h3>
+      </div>
+    `;
   },
   /**
     * Renders the HTML markup for a Pokemon card.
@@ -86,7 +99,7 @@ export const card = {
     '<span class="poke-card__id poke-card__id--empty"></span>'}</span>
             </h3>
         <div class="poke-card__types">
-          ${badge.render(pokemon.types)}
+          ${Badge.render(pokemon.types)}
         </div>
       </div>
     `;

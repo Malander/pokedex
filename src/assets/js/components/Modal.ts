@@ -1,8 +1,8 @@
 import { store } from '../store/store';
 import { PokemonData } from '../types/types';
-import { badge } from './badge';
+import { Badge } from './Badge';
 
-export const modal = {
+export const Modal = {
   /**
    * Calculate the width of the stat bar in proportion of the max value.
    * @param {number} score The actual score of the pokemon stat.
@@ -41,7 +41,7 @@ export const modal = {
             <div>
               <h3>Types</h3>
               <div class="poke-modal__types">
-                ${badge.render(pokemon.types)}
+                ${Badge.render(pokemon.types)}
               </div>
             </div>
             <div>
@@ -81,7 +81,7 @@ export const modal = {
       return pokemon.id === +pokeId;
     });
     if (currentPokemonData) {
-      modal.render(currentPokemonData);
+      this.render(currentPokemonData);
     }
   },
   /**

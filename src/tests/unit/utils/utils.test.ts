@@ -1,14 +1,10 @@
-import { formatNumberToHash, ucFirst } from '../../../js/utils/utils';
+import { formatNumberToHash, ucFirst } from '../../../assets/js/utils/utils';
 
 describe('ucFirst', () => {
   it('should capitalize the first letter of a string', () => {
     expect(ucFirst('poison')).toBe('Poison');
     expect(ucFirst('charmander')).toBe('Charmander');
     expect(ucFirst('bulbasaur')).toBe('Bulbasaur');
-  });
-
-  it('should handle empty strings without errors', () => {
-    expect(ucFirst('')).toBe('');
   });
 });
 

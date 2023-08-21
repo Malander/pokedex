@@ -1,4 +1,4 @@
-import { errorMessage } from '../../../js/components/error';
+import { ErrorBoundary } from '../../../assets/js/components/Error';
 
 describe('errorMessage', () => {
   // Create a container before each test
@@ -8,7 +8,7 @@ describe('errorMessage', () => {
 
   describe('template', () => {
     it('should return the correct HTML template', () => {
-      const template = errorMessage.template();
+      const template = ErrorBoundary.template();
       expect(template).toContain('<div class="poke-error">');
       expect(template).toContain('<img width="200" height="200" src="/images/sad-pikachu.png" alt="Sad Pikachu">');
       expect(template).toContain('<h2>There was an error with your request.</h2>');
@@ -18,10 +18,10 @@ describe('errorMessage', () => {
 
   describe('render', () => {
     it('should render the template into the #app element', () => {
-      errorMessage.render();
+      ErrorBoundary.render();
       const appContent = document.getElementById('app')!.innerHTML;
 
-      expect(appContent).toEqual(errorMessage.template());
+      expect(appContent).toEqual(ErrorBoundary.template());
     });
   });
 });
