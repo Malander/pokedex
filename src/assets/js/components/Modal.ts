@@ -21,7 +21,6 @@ export const Modal = {
   template(pokemon: PokemonData) {
     const modalElement = document.createElement('div');
     modalElement.classList.add('poke-modal');
-    // TODO: check existance of pokemon type (it should be always present)
     const statColor = pokemon.types![0].type.name;
     modalElement.innerHTML = `
       <div class="poke-modal__frame">

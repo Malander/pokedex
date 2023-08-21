@@ -20,7 +20,7 @@ export const Card = {
       const pokemonData = this.transformResponseToPokemonData(response, pokemonUrl);
       const updatedPokemons = this.getUpdatedPokemons(pokemonUrl, pokemonData);
 
-      if (pokemonData.name === 'Ivysaur') throw new Error();
+      // if (pokemonData.name === 'Venusaur') throw new Error();
         
       store.update({ pokemons: updatedPokemons }, () => this.update(targetElement, pokemonData) );
     } catch {
@@ -69,9 +69,19 @@ export const Card = {
   update(target: HTMLElement, pokemon: PokemonData) {
     target.outerHTML = this.render(pokemon);
   },
+  /**
+   * Replaces the content of the given target HTMLElement with an error template.
+   * 
+   * @param target - The HTMLElement that will be replaced by the error content.
+  */
   error(target: HTMLElement) {
     target.outerHTML = this.errorTemplate();
   },
+  /**
+   * Generates an HTML of an error card.
+   * 
+   * @returns A string containing the HTML for an error card.
+  */
   errorTemplate() {
     return `
       <div class="poke-card poke-card--error">
@@ -96,7 +106,7 @@ export const Card = {
           ${pokemon.idString ? 
     `<span class="poke-card__id">${pokemon.idString}</span>`
     : 
-    '<span class="poke-card__id poke-card__id--empty"></span>'}</span>
+    '<span class="poke-card__id poke-card__id--empty"></span>'}
             </h3>
         <div class="poke-card__types">
           ${Badge.render(pokemon.types)}

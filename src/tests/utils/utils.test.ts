@@ -1,4 +1,4 @@
-import { formatNumberToHash, ucFirst } from '../../../assets/js/utils/utils';
+import { formatNumberToHash, ucFirst } from '../../assets/js/utils/utils';
 
 describe('ucFirst', () => {
   it('should capitalize the first letter of a string', () => {

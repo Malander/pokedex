@@ -1,5 +1,6 @@
 import { ErrorBoundary } from '../components/Error';
 import { PokemonBase, PokemonListAPIResponse, SinglePokemonAPIResponse } from '../types/types';
+import { ucFirst } from '../utils/utils';
 import { POKEMON_LIST_ENDPOINT } from './endpoints';
 
 async function fetchData<T>(url: string): Promise<T | undefined> {
@@ -33,4 +34,21 @@ export const getPokemonList = async (): Promise<PokemonBase[] | undefined> => {
 */
 export const getPokemonData = async (pokemonUrl: string): Promise<SinglePokemonAPIResponse | undefined> => {
   return fetchData<SinglePokemonAPIResponse>(pokemonUrl);
+};
+
+export const fetchPokemons = async () => {
+  const results = await getPokemonList();
+  if (!results || !Array.isArray(results) || results.length === 0) {
+    throw new Error('Failed to fetch Pokemon data');
+  }
+  return results.map(({ name, url }) => ({
+    name: ucFirst(name),
+    url: url,
+    id: null,
+    idString: null,
+    image: null,
+    stats: null,
+    order: null,
+    types: null,
+  }));
 };

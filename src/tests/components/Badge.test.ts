@@ -1,7 +1,7 @@
-import { Badge } from '../../../assets/js/components/Badge';
-import { mockOriginalSinglePokemonData, mockSinglePokemonData } from '../../mockData';
+import { Badge } from '../../assets/js/components/Badge';
+import { mockOriginalSinglePokemonData, mockSinglePokemonData } from '../mockData';
 
-describe('badge', () => {
+describe('Badge component', () => {
   describe('render', () => {
     it('should return correct badges for given pokemon types', () => {
       const result = Badge.render(mockSinglePokemonData.types);

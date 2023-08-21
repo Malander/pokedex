@@ -1,6 +1,6 @@
-import { Loader } from '../../../assets/js/components/Loader';
+import { Loader } from '../../assets/js/components/Loader';
 
-describe('loader', () => {
+describe('Loader component', () => {
   describe('render', () => {
     it('should return the correct loader HTML template', () => {
       const renderedTemplate = Loader.render();

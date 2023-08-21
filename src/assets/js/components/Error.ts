@@ -3,11 +3,10 @@ export const ErrorBoundary =  {
     if (error instanceof Error) {
       ErrorBoundary.render(error.message);
     } else {
-      ErrorBoundary.render('An error occurred.');
+      ErrorBoundary.render('Generic error.');
     }
   },
   template(errorText?: string) {
-    debugger;
     return `
       <div class="poke-error">
         <img width="200" height="200" src="/images/sad-pikachu.png" alt="Sad Pikachu">

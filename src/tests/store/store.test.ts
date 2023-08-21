@@ -1,5 +1,5 @@
-import { store } from '../../../assets/js/store/store';
-import { mockSinglePokemonData } from '../../mockData';
+import { store } from '../../assets/js/store/store';
+import { mockSinglePokemonData } from '../mockData';
 
 describe('store', () => {
   beforeEach(() => {
