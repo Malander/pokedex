@@ -1,10 +1,11 @@
 import { Card } from './components/Card';
 import { ErrorBoundary } from './components/Error';
 import { Modal } from './components/Modal';
-import { fetchPokemons } from './api/api';
+import { getPokemonList } from './api/api';
 import { store } from './store/store';
 import { Loader } from './components/Loader';
 import { observerService } from './services/observer';
+import { generateSinglePokemonStateSlice } from './utils/utils';
 
 export const App = {  
   /**
@@ -12,8 +13,10 @@ export const App = {
   */
   async init() {
     try {
-      const pokemonsData = await fetchPokemons();
-      store.update({ isLoading: false, pokemons: pokemonsData }, () => this.render());
+      const pokemonList = await getPokemonList();
+      if (!pokemonList) return;
+      const pokemonData = generateSinglePokemonStateSlice(pokemonList);
+      store.update({ isLoading: false, pokemons: pokemonData }, () => this.render());
       observerService.initObserver(document.querySelectorAll('.poke-card'));
     } catch (error) {
       store.update({ isLoading: false }, () => ErrorBoundary.handleError(error));

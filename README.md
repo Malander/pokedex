@@ -32,5 +32,7 @@ npm run build
 - Vitejs (for development environment and building)
 - typescript-eslint (for linting)
 - sass (as a css pre-processor)
+- Jest (unit and integration tests)
+- Cypress (e2e tests)
 
 This project is written in Vanilla JS and uses only dev-dependencies, it does not use any other third-party library or framework in order to work.

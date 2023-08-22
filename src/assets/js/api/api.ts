@@ -1,9 +1,8 @@
 import { ErrorBoundary } from '../components/Error';
 import { PokemonBase, PokemonListAPIResponse, SinglePokemonAPIResponse } from '../types/types';
-import { ucFirst } from '../utils/utils';
 import { POKEMON_LIST_ENDPOINT } from './endpoints';
 
-async function fetchData<T>(url: string): Promise<T | undefined> {
+export async function fetchData<T>(url: string): Promise<T | undefined> {
   try {
     const response = await fetch(url);
     if (response.ok) {
@@ -22,10 +21,13 @@ async function fetchData<T>(url: string): Promise<T | undefined> {
 */
 export const getPokemonList = async (): Promise<PokemonBase[] | undefined> => {
   const limit = 100;
-  return fetchData<PokemonListAPIResponse>(`${POKEMON_LIST_ENDPOINT}?limit=${limit}`)
-    .then(data => data?.results);
+  try {
+    const data = await fetchData<PokemonListAPIResponse>(`${POKEMON_LIST_ENDPOINT}?limit=${limit}`);
+    return data?.results;
+  } catch (error) {
+    ErrorBoundary.handleError(error);
+  }
 };
-
 /**
  * Fetches detailed data for a specific Pokemon from the API.
  *
@@ -34,21 +36,4 @@ export const getPokemonList = async (): Promise<PokemonBase[] | undefined> => {
 */
 export const getPokemonData = async (pokemonUrl: string): Promise<SinglePokemonAPIResponse | undefined> => {
   return fetchData<SinglePokemonAPIResponse>(pokemonUrl);
-};
-
-export const fetchPokemons = async () => {
-  const results = await getPokemonList();
-  if (!results || !Array.isArray(results) || results.length === 0) {
-    throw new Error('Failed to fetch Pokemon data');
-  }
-  return results.map(({ name, url }) => ({
-    name: ucFirst(name),
-    url: url,
-    id: null,
-    idString: null,
-    image: null,
-    stats: null,
-    order: null,
-    types: null,
-  }));
 };
