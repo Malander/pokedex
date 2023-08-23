@@ -15,7 +15,7 @@ export const Card = {
 
     try {
       const response = await getPokemonData(pokemonUrl);
-      if (!response) throw new Error();
+      if (!response) throw new Error('Could not get Pokemon data.');
 
       const pokemonData = this.transformResponseToPokemonData(response, pokemonUrl);
       const updatedPokemons = this.getUpdatedPokemons(pokemonUrl, pokemonData);
@@ -103,11 +103,13 @@ export const Card = {
         <img alt="${pokemon.name} Artwork" width="150" height="150" class="poke-card__image" src="${imageSrc}" />
         <h3 class="poke-card__name">
           ${pokemon.name}
-          ${pokemon.idString ? 
-    `<span class="poke-card__id">${pokemon.idString}</span>`
-    : 
-    '<span class="poke-card__id poke-card__id--empty"></span>'}
-            </h3>
+          ${pokemon.idString
+            ? 
+            `<span class="poke-card__id">${pokemon.idString}</span>`
+            :
+            '<span class="poke-card__id poke-card__id--empty"></span>'
+          }
+        </h3>
         <div class="poke-card__types">
           ${Badge.render(pokemon.types)}
         </div>

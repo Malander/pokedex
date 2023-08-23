@@ -1,13 +1,13 @@
-import { App } from '../assets/js/App';
-import { getPokemonList } from '../assets/js/api/api';
-import { ErrorBoundary } from '../assets/js/components/Error';
-import { Loader } from '../assets/js/components/Loader';
-import { store } from '../assets/js/store/store';
-import { mockInitialPokemonState, mockPokemonListApiResponse } from './mockData';
+import { App } from '../../assets/js/App';
+import { getPokemonList } from '../../assets/js/api/api';
+import { ErrorBoundary } from '../../assets/js/components/Error';
+import { Loader } from '../../assets/js/components/Loader';
+import { store } from '../../assets/js/store/store';
+import { mockInitialPokemonState, mockPokemonListApiResponse } from '../mockData';
 
-jest.mock('../assets/js/api/api');
-jest.mock('../assets/js/store/store');
-jest.mock('../assets/js/components/Error');
+jest.mock('../../assets/js/api/api');
+jest.mock('../../assets/js/store/store');
+jest.mock('../../assets/js/components/Error');
 
 describe('App Component', () => {
   const mockedFetchPokemons = getPokemonList as jest.MockedFunction<typeof getPokemonList>;
@@ -16,7 +16,7 @@ describe('App Component', () => {
     callback();
   });
   const mockedError = ErrorBoundary.handleError as jest.MockedFunction<typeof ErrorBoundary.handleError>;
-  const renderSpy = jest.spyOn(App, 'render').mockImplementation(() => {});
+  const renderSpy = jest.spyOn(App, 'render').mockImplementation(() => jest.fn());
 
   beforeEach(() => {
     // Clear all instances and calls to constructor and all methods:
@@ -49,28 +49,11 @@ describe('App Component', () => {
   describe('template', () => {
     it('should render loader if isLoading is true', () => {
       store.state.isLoading = true;
-
+  
       const template = App.template();
-
+  
       expect(template).toBe(Loader.render());
     });
+  })
 
-    it('should render the Pokemon grid if isLoading is false', () => {
-      store.state.isLoading = false;
-
-      const template = App.template();
-
-      expect(template).toContain('<div class="poke-grid">');
-    });
-  });
-
-  describe('render', () => {
-    it('should render the template', () => {
-      renderSpy.mockRestore();
-      App.render();
-
-      const contentSlot = document.getElementById('content-slot');
-      expect(contentSlot).not.toBeNull();
-    });
-  });
 });

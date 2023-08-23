@@ -1,5 +1,3 @@
-import { PokemonBase } from '../types/types';
-
 /**
  * Capitalizes the first character of a given string.
  * 
@@ -25,23 +23,4 @@ export const ucFirst = (value: string) => value.charAt(0).toUpperCase() + value.
 export const formatNumberToHash = (value: number) => {
   const formattedNumber = value.toString().padStart(4, '0');
   return `#${formattedNumber}`;
-};
-
-/**
- * Transforms a list of Pokemon to a state slice with extended properties.
- * 
- * @param pokemons - Array of basic Pokemon data.
- * @returns Array of Pokemon with extended properties initialized to null.
- */
-export const generateSinglePokemonStateSlice = (pokemons: PokemonBase[]) => {
-  return pokemons.map(({ name, url }) => ({
-    name: ucFirst(name),
-    url: url,
-    id: null,
-    idString: null,
-    image: null,
-    stats: null,
-    order: null,
-    types: null,
-  }));
 };

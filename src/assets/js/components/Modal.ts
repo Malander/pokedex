@@ -5,7 +5,7 @@ import { Badge } from './Badge';
 export const Modal = {
   /**
    * Calculate the width of the stat bar in proportion of the max value.
-   * @param {number} score The actual score of the pokemon stat.
+   * @param score The actual score of the pokemon stat.
   */
   calculateBarWidth(score: number) {
     // Max stat value
@@ -46,21 +46,26 @@ export const Modal = {
             <div>
               <h3>Stats</h3>
               <div class="poke-modal__stats">
-                ${pokemon.stats ? pokemon.stats.map((stat) => {
-    return `
-                    <div class="poke-stat">
-                      <div class="poke-stat__name">
-                        ${stat.stat.name}
-                      </div>
-                      <div class="poke-stat__bar">
-                        <span class="poke-stat__bar-value poke-stat__bar-value--${statColor}" style="width: ${this.calculateBarWidth(stat.base_stat)}%">${stat.base_stat}</span>
-                      </div>
-                    </div>
-                  `;
-  }).join('') : ''}
+                ${pokemon.stats
+                  ?
+                  pokemon.stats.map((stat) => {
+                    return `
+                      <div class="poke-stat">
+                        <div class="poke-stat__name">
+                          ${stat.stat.name}
+                        </div>
+                        <div class="poke-stat__bar">
+                          <span class="poke-stat__bar-value poke-stat__bar-value--${statColor}" style="width: ${this.calculateBarWidth(stat.base_stat)}%">
+                            ${stat.base_stat}
+                          </span>
+                        </div>
+                      </div>`
+                      }).join('')
+                  : 
+                  ''
+                }
               </div>
             </div>
-            
           </div>
         </div>
       </div>

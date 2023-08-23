@@ -1,5 +1,9 @@
 import { Card } from '../components/Card';
 
+/**
+ * A service to handle the intersection behavior of elements using the IntersectionObserver API.
+ * Specifically designed to trigger the loading of Pokemon cards when an element comes into view.
+*/
 export const observerService = {
   /**
    * Initializes an IntersectionObserver to load Pokemon cards for intersecting elements.

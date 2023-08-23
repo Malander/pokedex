@@ -5,7 +5,8 @@ import { getPokemonList } from './api/api';
 import { store } from './store/store';
 import { Loader } from './components/Loader';
 import { observerService } from './services/observer';
-import { generateSinglePokemonStateSlice } from './utils/utils';
+import { ucFirst } from './utils/utils';
+import { PokemonBase } from './types/types';
 
 export const App = {  
   /**
@@ -13,15 +14,44 @@ export const App = {
   */
   async init() {
     try {
+      this.render();
       const pokemonList = await getPokemonList();
-      if (!pokemonList) return;
-      const pokemonData = generateSinglePokemonStateSlice(pokemonList);
+      if (!pokemonList) throw new Error('Failed to fetch Pokemons');
+      const pokemonData = this.generateSinglePokemonStateSlice(pokemonList);
       store.update({ isLoading: false, pokemons: pokemonData }, () => this.render());
       observerService.initObserver(document.querySelectorAll('.poke-card'));
     } catch (error) {
       store.update({ isLoading: false }, () => ErrorBoundary.handleError(error));
     }
   },
+  /**
+   * Transforms a list of Pokemon to a state slice with extended properties.
+   * 
+   * @param pokemons - Array of basic Pokemon data.
+   * @returns Array of Pokemon with extended properties initialized to null.
+  */
+  generateSinglePokemonStateSlice(pokemons: PokemonBase[]) {
+    return pokemons.map(({ name, url }) => ({
+      name: ucFirst(name),
+      url: url,
+      id: null,
+      idString: null,
+      image: null,
+      stats: null,
+      order: null,
+      types: null,
+    }));
+  },
+  /**
+   * Generates the template for the Pokémon grid.
+   * 
+   * This method returns a string template that includes:
+   * - A caption with the title "Pokedex".
+   * - A subtitle providing a brief description.
+   * - A content section that maps over the Pokémon state and renders each Pokémon using the Card component.
+   * 
+   * @returns The HTML string template for the Pokémon grid.
+  */
   getPokemonGridTemplate() {
     return `
       <div class="poke-grid__caption">
@@ -30,8 +60,8 @@ export const App = {
       </div>
       <div class="poke-grid__content" id="content-slot">
         ${store.state.pokemons.map((pokemon) => {
-    return `${Card.render(pokemon)}`;
-  }).join('')}
+          return Card.render(pokemon);
+        }).join('')}
       </div>`;
   },
   /**

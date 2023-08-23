@@ -5,11 +5,13 @@
         "es2021": true
     },
     "extends": [
-        "airbnb-typescript/base",
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
         "plugin:@typescript-eslint/recommended-type-checked",
         "plugin:@typescript-eslint/stylistic-type-checked",
         "plugin:import/recommended"
     ],
+    "plugins": ["@typescript-eslint"],
     "overrides": [
         {
           "files": ["tests/**/*"],
@@ -22,6 +24,7 @@
           }
         }
     ],
+    
     "parserOptions": {
         "ecmaVersion": "latest",
         "sourceType": "module",
@@ -29,6 +32,7 @@
     },
     "rules": {
         "prefer-const": "off",
-        "@typescript-eslint/unbound-method": "off"
+        "@typescript-eslint/unbound-method": "off",
+        "import/no-unresolved": "off"
     }
 }

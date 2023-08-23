@@ -1,11 +1,17 @@
 import { AppState } from '../types/types';
 
+/**
+ * The main application store that maintains and updates the app's state.
+*/
 interface Store {
   state: AppState;
   update(newState: Partial<AppState>, callback: () => void): void;
 }
 
 export const store: Store = {
+  /**
+   * Initial state
+  */
   state: {
     pokemons: [],
     isLoading: true,
