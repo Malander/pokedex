@@ -16,4 +16,5 @@ describe('Modal Component', () => {
     cy.get('.poke-modal__close').click();
     cy.get('.poke-modal').should('not.exist');
   });
+  
 });
