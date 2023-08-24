@@ -9,6 +9,7 @@ describe('Initial Load', () => {
 
   it('should display the Pokémon grid after loading', () => {
     cy.get('.poke-grid').should('be.visible'); 
+    cy.get('.poke-loader').should('not.exist');
   });
   
   it('should render Pokémon cards correctly and with the correct lenght', () => {
