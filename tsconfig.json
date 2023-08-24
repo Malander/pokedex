@@ -20,6 +20,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["**/*.ts"],
+  "include": ["**/*.ts", "jest.config.js"],
   "exclude": ["@types/jest", "./cypress", "./cypress.config.ts"]
 }

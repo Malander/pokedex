@@ -10,8 +10,7 @@
     "test:unit": "jest tests/unit",
     "test:integration": "jest tests/integration",
     "test:jest": "jest",
-    "cypress": "cypress open",
-    "test:e2e": "start-server-and-test preview http://localhost:4173 'cypress run --headless --browser chrome'",
+    "test:e2e": "start-server-and-test vite --port=5173 http://localhost:5173 'cypress run --headless --browser chrome'",
     "test:all": "npm run test:jest && npm run test:e2e"
   },
   "devDependencies": {

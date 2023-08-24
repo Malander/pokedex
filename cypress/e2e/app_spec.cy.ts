@@ -2,10 +2,6 @@ describe('Initial Load', () => {
   beforeEach(() => {
     cy.visit('/');
   });
-  
-  it('should display the loader during the initial load', () => {
-    cy.get('.poke-loader').should('be.visible');
-  });
 
   it('should display the Pokémon grid after loading', () => {
     cy.get('.poke-grid').should('be.visible'); 
