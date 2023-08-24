@@ -16,7 +16,7 @@ This app is a simple VanillaJS web app that displays a list of pokemons from an 
 ## Requirements
 To view the app and to run tests you need to have **node** installed, I recommended to intall [Volta](https://volta.sh/) in order to run the same node version required by this app.
 
-THe node version used by this project is: `node@18.17.1`
+The node version used by this project is: `node@18.17.1`
 ## Getting started
 Follow these instructions to run the application.
 
