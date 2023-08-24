@@ -11,7 +11,7 @@
     "test:unit": "jest tests/unit",
     "test:integration": "jest tests/integration",
     "test:jest": "jest",
-    "test:e2e": "start-server-and-test preview:test http://localhost:5173 'cypress run --headless --browser chrome'",
+    "test:e2e": "start-server-and-test preview:test http://localhost:4173 'cypress run --headless --browser chrome'",
     "test:all": "npm run test:jest && npm run test:e2e"
   },
   "devDependencies": {
